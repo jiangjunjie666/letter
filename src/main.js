@@ -12,7 +12,13 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 //引入pinia
 import pinia from '@/store/index.js'
+//引入需要的全局组件
+import TabbarNav from '@/components/TabbarNav/index.vue'
+import TabbarFixed from '@/components/TabbarFixed/index.vue'
 const app = createApp(App)
+//注册全局组件
+app.component('TabbarNav', TabbarNav)
+app.component('TabbarFixed', TabbarFixed)
 app.use(rouer)
 app.use(ElementPlus, {
   locale: zhCn
