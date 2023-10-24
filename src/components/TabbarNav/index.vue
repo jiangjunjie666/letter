@@ -14,15 +14,18 @@
             <li :class="{ active: $route.name == 'masterwork' }" @click="goLayout('/masterwork')">名著</li>
             <li :class="{ active: $route.name == 'writar' }" @click="goLayout('/writar')">名家</li>
             <li :class="{ active: $route.name == 'community' }" @click="goLayout('/community')">社区</li>
+            <li :class="{ active: $route.name == 'community' }" @click="goLayout('/community')">足迹</li>
             <li :class="{ active: $route.name == 'friend' }" @click="goLayout('/friend')">消息</li>
           </ul>
         </div>
         <div class="login" @click="goLogin">
-          <h1 v-if="false">登录</h1>
-          <img src="@/../public/coffee-6249312.jpg" alt="" />
-          <div class="login-card login-card-show">
-            <div class="name">我的名字</div>
-          </div>
+          <el-tooltip class="box-item" effect="dark" content="登录享受所有功能" placement="right-end">
+            <h1 v-if="true" @click="dialogVisible = true">登录</h1>
+          </el-tooltip>
+          <el-dialog v-model="dialogVisible" width="768px" :before-close="handleClose">
+            <GetLoginCard></GetLoginCard>
+          </el-dialog>
+          <LoginCard v-if="loginCardShow" @moverLoginCard="moverLoginCard"></LoginCard>
         </div>
       </div>
     </div>
@@ -32,16 +35,26 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-
+import LoginCard from '@/components/LoginCard/index.vue'
+import GetLoginCard from '@/components/GetLoginCard/index.vue'
 let $router = useRouter()
 let $route = useRoute()
-
+let loginCardShow = ref(false)
+let dialogVisible = ref(false)
 const goLayout = (path) => {
   //路由跳转
   $router.push(path)
 }
 //登录
 const goLogin = () => {}
+//鼠标移入头像显示卡片
+const CardHandler = () => {
+  loginCardShow.value = true
+}
+//接收子组件的信息，鼠标移出则隐藏卡片
+const moverLoginCard = () => {
+  loginCardShow.value = false
+}
 onMounted(() => {})
 </script>
 
@@ -99,7 +112,7 @@ onMounted(() => {})
           justify-content: space-between;
           li {
             height: 36px;
-            padding: 10px 25px;
+            padding: 10px 20px;
             font-size: 18px;
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             text-align: center;
@@ -115,12 +128,23 @@ onMounted(() => {})
         }
       }
       .login {
+        // background-color: blue;
+        width: 40px;
+        height: 40px;
+        float: right;
+        margin: 30px 120px 0 0;
+        background-color: rgb(101, 185, 224);
+        border-radius: 50%;
+        text-align: center;
+
         h1 {
           font-size: 18px;
+          color: #fff;
           font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-          line-height: 97px;
+          line-height: 40px;
           &:hover {
             cursor: pointer;
+            // color: rgb(241, 37, 37);
           }
         }
         img {
@@ -128,31 +152,16 @@ onMounted(() => {})
           height: 50px;
           margin: 20px auto;
           border-radius: 50%;
-          transition: 0.5s all;
+          transition: 0.3s all;
           z-index: 9;
           &:hover {
             cursor: pointer;
-            margin: 30px 0 -82px 0;
-            transform: scale(1.5);
-            z-index: 9;
           }
         }
-        .login-card {
-          z-index: 1;
-          width: 300px;
-          height: 400px;
-          background-color: #fff;
-          position: absolute;
-          top: 110%;
-          right: 8%;
-          display: none;
-          transition: 0.3s all;
-          .name {
-            padding: 10px;
-          }
-        }
-        .login-card-show {
-          display: block;
+        .avatarShow {
+          margin: 30px 0 -82px 0;
+          transform: scale(1.5);
+          z-index: 9;
         }
       }
     }
