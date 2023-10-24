@@ -18,13 +18,14 @@
             <li :class="{ active: $route.name == 'friend' }" @click="goLayout('/friend')">消息</li>
           </ul>
         </div>
-        <div class="login" @click="goLogin">
+        <div class="login" @click="goLogin" :class="{ none: Object.keys(userStore.userInfo).length != 0 }">
           <el-tooltip class="box-item" effect="dark" content="登录享受所有功能" placement="right-end">
-            <h1 v-if="true" @click="dialogVisible = true">登录</h1>
+            <h1 v-if="Object.keys(userStore.userInfo).length == 0" @click="dialogVisible = true">登录</h1>
           </el-tooltip>
           <el-dialog v-model="dialogVisible" width="768px" :before-close="handleClose">
-            <GetLoginCard></GetLoginCard>
+            <GetLoginCard @loginChange="loginChange"></GetLoginCard>
           </el-dialog>
+          <img v-if="Object.keys(userStore.userInfo).length != 0" ref="avatar" :src="userStore.userInfo.image" alt="头像" :class="{ avatarShow: loginCardShow }" @mouseenter="CardHandler" />
           <LoginCard v-if="loginCardShow" @moverLoginCard="moverLoginCard"></LoginCard>
         </div>
       </div>
@@ -37,6 +38,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import LoginCard from '@/components/LoginCard/index.vue'
 import GetLoginCard from '@/components/GetLoginCard/index.vue'
+import useUserStore from '@/store/modules/user.js'
+let userStore = useUserStore()
 let $router = useRouter()
 let $route = useRoute()
 let loginCardShow = ref(false)
@@ -54,6 +57,11 @@ const CardHandler = () => {
 //接收子组件的信息，鼠标移出则隐藏卡片
 const moverLoginCard = () => {
   loginCardShow.value = false
+}
+//接收登录组件的通知，关闭登陆组件
+const loginChange = () => {
+  console.log(1)
+  dialogVisible.value = false
 }
 onMounted(() => {})
 </script>
@@ -136,7 +144,10 @@ onMounted(() => {})
         background-color: rgb(101, 185, 224);
         border-radius: 50%;
         text-align: center;
-
+        &.none {
+          background-color: #fff;
+          margin: 10px 120px 0 0;
+        }
         h1 {
           font-size: 18px;
           color: #fff;

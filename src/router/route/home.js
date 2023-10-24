@@ -1,5 +1,6 @@
 //引入layout路由
 import { homeLayoutRouter } from './homeLayout'
+import { accontLayoutRouter } from './accountLayout'
 //主页路由
 export const homeRouter = [
   {
@@ -23,5 +24,15 @@ export const homeRouter = [
     meta: {
       title: '任意路由'
     }
+  },
+  {
+    path: '/account',
+    component: () => import('@/views/account/index.vue'),
+    name: 'account',
+    redirect: '/account/heart',
+    meta: {
+      title: '个人中心'
+    },
+    children: accontLayoutRouter
   }
 ]

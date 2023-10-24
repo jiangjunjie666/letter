@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <TabbarNav></TabbarNav>
-    <TabbarFixed />
     <div class="heart">
       <div class="heart-cen">
         <div class="layout-view">

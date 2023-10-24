@@ -17,8 +17,9 @@
           /
           <h1>手机验证码登录</h1>
         </div>
-        <el-input v-model="loginUsername" placeholder="账号/手机号" style="margin: 20px" />
-        <el-input v-model="loginPassword" type="password" placeholder="请输入密码/手机验证码" show-password />
+        <button style="position: absolute; top: 150px; right: 5px; padding: 5px" @click="getPhoneCode">获取验证码</button>
+        <el-input v-model="loginUsername" placeholder="账号/手机号" style="margin: 20px 20px 20px 0; width: 200px"></el-input>
+        <el-input v-model="loginPassword" type="password" placeholder="请输入密码/手机验证码" show-password style="width: 200px; margin: 0 20px 0 0" />
         <a href="###">忘记密码？</a>
         <button @click="pasLogin">登录</button>
         <button @click="phoneLogin" style="margin-top: 10px">手机号登录</button>
@@ -43,7 +44,12 @@
 
 <script setup>
 import { ref } from 'vue'
-
+import { reqRegisterUser, reqGetCode } from '@/api/module/user.js'
+import { ElMessage, ElNotification } from 'element-plus'
+import useUserStore from '@/store/modules/user.js'
+//自定义事件
+let $emit = defineEmits(['loginChange'])
+let userStore = useUserStore()
 let isLogin = ref(true)
 //登录的input
 let loginUsername = ref('')
@@ -53,16 +59,112 @@ let registerUsername = ref('')
 let registerPassword = ref('')
 let registerPasswordAll = ref('')
 //注册按钮
-const getRegister = () => {
-  console.log(1)
+const getRegister = async () => {
+  //检验账号密码
+  if (registerUsername.value.length === 0 || registerPassword.value.length === 0 || registerPasswordAll.value.length === 0) {
+    return ElNotification({
+      title: 'Error',
+      message: '请按要求输入账号密码'
+    })
+  }
+  if (registerPassword.value !== registerPasswordAll.value) {
+    return ElNotification({
+      title: 'Error',
+      message: '两次密码输入不一致,请检查'
+    })
+  }
+  const data = {
+    name: registerUsername.value,
+    password: registerPassword.value
+  }
+  let res = await reqRegisterUser(data)
+  if (res.code != 1) {
+    return ElNotification({
+      title: 'Error',
+      message: '注册失败'
+    })
+  } else {
+    loginUsername.value = res.data.userId
+    isLogin.value = true
+    return ElNotification({
+      title: 'Success',
+      message: '注册成功/请登录'
+    })
+  }
 }
 //密码登录
-const pasLogin = () => {
-  console.log(2)
+const pasLogin = async () => {
+  //检验账号密码
+  if (loginUsername.value.length === 0 || loginPassword.value.length === 0) {
+    return ElNotification({
+      title: 'Error',
+      message: '请按要求输入账号密码'
+    })
+  }
+  const data = {
+    userId: loginUsername.value,
+    password: loginPassword.value
+  }
+  let res = userStore.pasLogin(data)
+  //判断res是否成功
+  res
+    .then((result) => {
+      console.log('成功')
+      //成功后关闭登录框，自定义事件通知父组件
+      //触发自定义事件
+      $emit('loginChange')
+    })
+    .catch((error) => {
+      console.log('失败')
+    })
 }
 //手机号登录
-const phoneLogin = () => {
-  console.log(3)
+const phoneLogin = async () => {
+  const data = {
+    tele: loginUsername.value,
+    code: loginPassword.value
+  }
+  if (loginUsername.value.length === 0 || loginPassword.value.length === 0) {
+    return ElNotification({
+      title: 'Error',
+      message: '请按要求输入手机号和验证码'
+    })
+  }
+  let res = userStore.phoneLogin(data)
+  //判断res是否成功
+  res
+    .then((result) => {
+      console.log('成功')
+      //成功后关闭登录框，自定义事件通知父组件
+      //触发自定义事件
+      $emit('loginChange')
+    })
+    .catch((error) => {
+      console.log('失败')
+    })
+}
+//或者手机验证码
+const getPhoneCode = async () => {
+  let ze = /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/
+  if (!ze.test(loginUsername.value)) {
+    return ElMessage({
+      type: 'error',
+      message: '请输入正确的手机号'
+    })
+  }
+  let res = await reqGetCode(loginUsername.value)
+  if (res.code !== 1) {
+    return ElMessage({
+      type: 'error',
+      message: '获取验证码失败'
+    })
+  } else {
+    loginPassword.value = res.data
+    return ElMessage({
+      type: 'success',
+      message: '获取验证码成功'
+    })
+  }
 }
 </script>
 

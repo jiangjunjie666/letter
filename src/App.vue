@@ -1,4 +1,6 @@
 <template>
+  <TabbarNav></TabbarNav>
+  <TabbarFixed />
   <router-view></router-view>
 </template>
 

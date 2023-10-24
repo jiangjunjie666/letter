@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="login-card" @mouseleave="LoginCardOver">
-      <div class="name">Leethrr</div>
+      <div class="name">{{ userStore.userInfo.name }}</div>
       <div class="flower">
         <p>鲜花:</p>
         <span> 100朵</span>
@@ -60,17 +60,17 @@
       </div>
       <!-- 一些选项 -->
       <div class="setting">
-        <div class="set">
+        <div class="set" @click="$router.push('/account')">
           <el-icon><User /></el-icon>
           <p>个人中心</p>
           <el-icon size="13"><ArrowRight /></el-icon>
         </div>
         <div class="set">
           <el-icon><User /></el-icon>
-          <p>切换账户</p>
+          <p>个人空间</p>
           <el-icon size="13"><ArrowRight /></el-icon>
         </div>
-        <div class="set">
+        <div class="set" @click="loginOut">
           <el-icon><User /></el-icon>
           <p>退出登录</p>
           <el-icon size="13"><ArrowRight /></el-icon>
@@ -81,12 +81,23 @@
 </template>
 
 <script setup>
+import useUserStore from '@/store/modules/user.js'
+import { useRouter } from 'vue-router'
+let $router = useRouter()
+let userStore = useUserStore()
 //自定义事件
 const emit = defineEmits(['moverLoginCard'])
 
 const LoginCardOver = () => {
   //触发自定义事件
   emit('moverLoginCard')
+}
+//退出登录
+const loginOut = () => {
+  //清除本地userinfo
+  localStorage.setItem('userInfo', '')
+  //刷新页面
+  $router.push('/')
 }
 </script>
 
