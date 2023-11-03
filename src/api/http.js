@@ -8,7 +8,12 @@ const http = axios.create({
 
 //请求拦截器
 http.interceptors.request.use(
+  //携带token
   (config) => {
+    const token = JSON.parse(localStorage.getItem('token'))
+    if (token) {
+      config.headers.token = token
+    }
     return config
   },
   (err) => {

@@ -6,10 +6,8 @@
         <div class="era">{{ AllText.dynasty }}</div>
       </div>
       <div class="text">
-        <h1 class="title">{{ AllText.head }}</h1>
-        <p>{{ AllText.text }}</p>
-        <div class="time">2019年3月28日</div>
-        <div class="writer">{{ AllText.writer }}</div>
+        <h1 class="title">{{ AllText.writer }}</h1>
+        <p>{{ AllText.intro }}</p>
         <el-button type="primary" @click="goDetail" class="btn" v-if="openAll">{{ btnText }}</el-button>
       </div>
     </div>
@@ -85,23 +83,12 @@ let props = defineProps({
       color: #797474;
       //溢出隐藏
       display: -webkit-box;
-      -webkit-line-clamp: 3; //显示3行
+      -webkit-line-clamp: 4; //显示3行
       -webkit-box-orient: vertical;
       // white-space: nowrap; /* 保持文本在一行内 */
       overflow: hidden; /* 隐藏溢出的文本 */
       text-overflow: ellipsis; /* 使用省略号表示溢出的文本 */
       // width: 100%; /* 设置容器宽度，可以根据需要调整 */
-    }
-    .time {
-      margin: 50px 0 0 50px;
-      font-size: 15px;
-      color: #797474;
-      float: left;
-    }
-    .writer {
-      float: left;
-      margin: 50px 0 0 50px;
-      color: #797474;
     }
     .btn {
       position: absolute;

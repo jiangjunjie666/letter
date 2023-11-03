@@ -95,7 +95,7 @@ const LoginCardOver = () => {
 //退出登录
 const loginOut = () => {
   //清除本地userinfo
-  localStorage.setItem('userInfo', '')
+  userStore.loginOut()
   //刷新页面
   $router.push('/')
 }

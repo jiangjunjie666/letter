@@ -20,13 +20,18 @@ export const homeLayoutRouter = [
     name: 'poetry'
   },
   {
-    path: 'writar',
+    path: '/writar',
     component: () => import('@/views/main/writar/index.vue'),
     name: 'writar'
   },
   {
-    path: 'community',
+    path: '/community',
     component: () => import('@/views/main/community/index.vue'),
     name: 'community'
+  },
+  {
+    path: '/footmark',
+    component: () => import('@/views/main/footmark/index.vue'),
+    name: 'footmark'
   }
 ]

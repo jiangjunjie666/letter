@@ -10,7 +10,7 @@ const API = {
   //验证码登录
   loginByCode: '/user/checkCode',
   //修改资料
-  updateUserInfo: '/common/update',
+  updateUserInfo: '/user/update',
   //修改头像
   updateAvatar: '/common/upload'
 }

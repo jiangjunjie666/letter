@@ -22,6 +22,8 @@ let useUserStore = defineStore('info', {
         })
       } else {
         localStorage.setItem('userInfo', JSON.stringify(res.data))
+        localStorage.setItem('token', JSON.stringify(res.data.token))
+        this.userInfo = res.data
         return ElMessage({
           type: 'success',
           message: '登录成功'
@@ -38,11 +40,19 @@ let useUserStore = defineStore('info', {
         })
       } else {
         localStorage.setItem('userInfo', JSON.stringify(res.data))
+        localStorage.setItem('token', JSON.stringify(res.data.token))
+        this.userInfo = res.data
         return ElMessage({
           type: 'success',
           message: '登录成功'
         })
       }
+    },
+    //退出登录
+    loginOut() {
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem('token')
+      this.userInfo = {}
     }
   },
   getters: {}

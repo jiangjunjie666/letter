@@ -3,9 +3,12 @@
   <div>
     <div class="detailItem">
       <div class="type" :class="{ shadm: shamdT }">
-        <div class="d">类型：</div>
+        <div class="d">{{ title }}:</div>
         <ul :class="{ show: openDetail == true }">
-          <li v-for="(i, index) in 40" :class="{ active: activeIndex == index }" @click="activeIndex = index">写景</li>
+          <li :class="{ active: activeIndex == -1 }" @click="changeDetail(-1)">不限</li>
+          <li v-for="(item, index) in detailList" :class="{ active: activeIndex == index }" @click="changeDetail(index)">
+            {{ item }}
+          </li>
           <li class="icon" v-if="openDetail == false" @click="openDetail = true">
             <el-icon><ArrowRight /></el-icon>
           </li>
@@ -23,15 +26,34 @@ import { ref } from 'vue'
 //是否打开全部
 let openDetail = ref(false)
 //高亮坐标
-let activeIndex = ref(0)
+let activeIndex = ref(-1)
 //接收父组件的数据props
 const props = defineProps({
   //是否携带下划线
   shamdT: {
     type: Boolean,
     default: true
+  },
+  //列表数据
+  detailList: {
+    type: Array,
+    default: []
+  },
+  //标题
+  title: {
+    type: String,
+    default: '类型'
   }
 })
+//接收自定义事件
+const $emit = defineEmits(['changePoetryDetail'])
+
+//选择分类时触发自定义事件
+const changeDetail = (index) => {
+  activeIndex.value = index
+  //触发自定义事件
+  $emit('changePoetryDetail', { type: props.title, Index: index })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -65,6 +87,7 @@ const props = defineProps({
       }
       li {
         padding: 8px 15px;
+        color: #817f7f;
         &:hover {
           color: red;
           cursor: pointer;
@@ -76,7 +99,7 @@ const props = defineProps({
           position: absolute;
           cursor: pointer;
           top: 0%;
-          right: 3%;
+          right: 0%;
         }
         &.icon:hover {
           color: aqua;

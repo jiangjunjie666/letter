@@ -12,9 +12,9 @@
             <li :class="{ active: $route.name == 'home' }" @click="goLayout('/home')">首页</li>
             <li :class="{ active: $route.name == 'poetry' }" @click="goLayout('/poetry')">诗词</li>
             <li :class="{ active: $route.name == 'masterwork' }" @click="goLayout('/masterwork')">名著</li>
-            <li :class="{ active: $route.name == 'writar' }" @click="goLayout('/writar')">名家</li>
+            <li :class="{ active: $route.name == 'writar' }" @click="goLayout('/writar')">诗人</li>
             <li :class="{ active: $route.name == 'community' }" @click="goLayout('/community')">社区</li>
-            <li :class="{ active: $route.name == 'community' }" @click="goLayout('/community')">足迹</li>
+            <li :class="{ active: $route.name == 'footmark' }" @click="goLayout('/footmark')">足迹</li>
             <li :class="{ active: $route.name == 'friend' }" @click="goLayout('/friend')">消息</li>
           </ul>
         </div>
