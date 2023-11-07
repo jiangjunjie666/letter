@@ -12,7 +12,7 @@ const API = {
   //修改资料
   updateUserInfo: '/user/update',
   //修改头像
-  updateAvatar: '/common/upload'
+  updateAvatar: '/user/updateUserImage'
 }
 
 //账号注册

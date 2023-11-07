@@ -10,37 +10,71 @@
       </div>
     </div>
     <div class="fileUp">
-      <input style="display: none" type="file" @change="uploadChange" ref="fileUpLoad" enctype="muitipart/form-data" />
+      <!-- <input style="display: none" type="file" @change="uploadChange" ref="fileUpLoad" enctype="muitipart/form-data" />
       <div class="file" @click="imgUpload">
         <el-icon size="50" style="color: #e6e0e0; cursor: pointer; width: 100%; height: 100%" @click="changeFileUp"><Plus /> </el-icon>
-      </div>
-      <el-button class="btn" type="primary" @click="upImg">上传头像</el-button>
+      </div> -->
+
+      <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="Avatar" />
+        <el-icon v-else class="avatar-uploader-icon">选择头像<Plus /></el-icon>
+      </el-upload>
     </div>
-    <!-- <form action="http://172.16.40.33:8083/common/upload" method="post" enctype="multipart/form-data">
-      <input type="file" />
-      <input type="submit" value="提交" />
-    </form> -->
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
 import useUserStore from '@/store/modules/user.js'
 import { reqUpdateAvatar } from '@/api/module/user.js'
 let userStore = useUserStore()
-let fileUpLoad = ref(null)
-const uploadChange = (e) => {
-  upImg(e)
+let actionUrl = 'http://172.16.40.33:8083/common/upload?id=' + userStore.userInfo.id
+const imageUrl = ref('')
+
+const beforeAvatarUpload = (rawFile) => {
+  if (rawFile.type !== 'image/jpeg') {
+    ElMessage.error('头像格式错误')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('头像大小超过2MB')
+    return false
+  }
+  return true
 }
-const changeFileUp = () => {
-  //触发file
-  fileUpLoad.value.click()
+
+const handleAvatarSuccess = (response, uploadFile) => {
+  imageUrl.value = response.data
+  updateAvatar(response.data)
+    .then((res) => {
+      //修改本地的用户数据
+      userStore.updateAvatar(response.data)
+      imageUrl.value = ''
+      return ElMessage({
+        type: 'success',
+        message: '头像修改成功'
+      })
+    })
+    .catch((err) => {
+      imageUrl.value = ''
+      ElMessage({
+        type: 'error',
+        message: '头像修改失败'
+      })
+    })
 }
-const upImg = async (e) => {
-  const formData = new FormData()
-  formData.append('avatar', e.target.files[0])
-  let res = await reqUpdateAvatar(formData)
-  console.log(res)
+
+const updateAvatar = async (imgUrl) => {
+  const data = {}
+  data.id = userStore.userInfo.id
+  data.image = imgUrl
+  let res = await reqUpdateAvatar(data)
+  if (res.code === 1) {
+    return true
+  } else {
+    return false
+  }
 }
 </script>
 
@@ -97,5 +131,36 @@ const upImg = async (e) => {
       margin-left: 20px;
     }
   }
+}
+</style>
+
+<style>
+.avatar-uploader .Avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+.avatar-uploader {
+  margin: 0 auto;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
 }
 </style>

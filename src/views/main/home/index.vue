@@ -93,8 +93,8 @@
   height: 340px;
   background-color: $bgcColor;
   .banner-cen {
-    padding-top: 20px;
-    width: 1000px;
+    padding-top: 10px;
+    width: 1400px;
     margin: 0 auto;
   }
 }

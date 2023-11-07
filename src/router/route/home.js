@@ -1,6 +1,7 @@
 //引入layout路由
 import { homeLayoutRouter } from './homeLayout'
 import { accontLayoutRouter } from './accountLayout'
+import { createLayoutRouter } from './createLayout'
 //主页路由
 export const homeRouter = [
   {
@@ -34,5 +35,15 @@ export const homeRouter = [
       title: '个人中心'
     },
     children: accontLayoutRouter
+  },
+  {
+    path: '/create',
+    component: () => import('@/views/create/index.vue'),
+    name: 'create',
+    redirect: '/create/poetry',
+    children: createLayoutRouter,
+    meta: {
+      title: '创作'
+    }
   }
 ]

@@ -12,6 +12,7 @@ let useUserStore = defineStore('info', {
     }
   },
   actions: {
+    //密码登录
     async pasLogin(userInfo) {
       let res = await reqLogin(userInfo)
       console.log(res)
@@ -30,6 +31,7 @@ let useUserStore = defineStore('info', {
         })
       }
     },
+    //手机号登录
     async phoneLogin(userInfo) {
       let res = await reqLoginByCode(userInfo)
       console.log(res)
@@ -53,6 +55,14 @@ let useUserStore = defineStore('info', {
       localStorage.removeItem('userInfo')
       localStorage.removeItem('token')
       this.userInfo = {}
+    },
+    //修改头像
+    updateAvatar(imgurl) {
+      let userinfo = JSON.parse(localStorage.getItem('userInfo'))
+      //修改image字段
+      userinfo.image = imgurl
+      localStorage.setItem('userInfo', JSON.stringify(userinfo))
+      this.userInfo = userinfo
     }
   },
   getters: {}

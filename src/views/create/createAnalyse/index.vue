@@ -1,5 +1,5 @@
 <template>
-  <div><el-empty description="路由错误" /></div>
+  <div>创作赏析</div>
 </template>
 
 <script setup></script>

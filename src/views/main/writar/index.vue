@@ -3,9 +3,20 @@
     <div class="left">
       <div class="detail">
         <div class="title">著名作家大全</div>
-        <DetailItem :shamdT="false" title="朝代" :detailList="dynastyList" @changePoetryDetail="changePoetryDetail"></DetailItem>
+        <DetailItem
+          :shamdT="false"
+          title="朝代"
+          :detailList="dynastyList"
+          @changePoetryDetail="changePoetryDetail"
+        ></DetailItem>
       </div>
-      <WriterDetailCard v-for="(i, index) in writerList" btnText="阅读相关诗词" :AllText="i" :key="i.id"></WriterDetailCard>
+      <el-empty description="暂时没有数据" v-if="writerList.length == 0" />
+      <WriterDetailCard
+        v-for="(i, index) in writerList"
+        btnText="阅读相关诗词"
+        :AllText="i"
+        :key="i.id"
+      ></WriterDetailCard>
       <el-pagination
         class="pagination"
         v-model:current-page="currentPage"
@@ -27,68 +38,68 @@
 </template>
 
 <script setup>
-import DetailItem from '@/component/detailItem/index.vue'
-import NewCard from '@/component/newCard/index.vue'
-import WriterDetailCard from '@/component/writerDetailCard/index.vue'
-import { ref, onMounted } from 'vue'
-import { reqGetDynasty, reqGetWriter } from '@/api/module/writer.js'
-import { ElMessage } from 'element-plus'
+import DetailItem from "@/component/detailItem/index.vue";
+import NewCard from "@/component/newCard/index.vue";
+import WriterDetailCard from "@/component/writerDetailCard/index.vue";
+import { ref, onMounted } from "vue";
+import { reqGetDynasty, reqGetWriter } from "@/api/module/writer.js";
+import { ElMessage } from "element-plus";
 //定义分页器中的参数
-let currentPage = ref(1) //当前页码
-let pageSize = ref(10) //每页数据条数
-let total = ref(50) //总数据条数
+let currentPage = ref(1); //当前页码
+let pageSize = ref(10); //每页数据条数
+let total = ref(50); //总数据条数
 //朝代数据
-let dynastyList = ref([])
+let dynastyList = ref([]);
 //朝代索引
-let dynastyIndex = ref(-1)
+let dynastyIndex = ref(-1);
 //作者信息
-let writerList = ref([])
+let writerList = ref([]);
 //分页器触发事件
 //pageSize发生变化触发
 const handleSizeChange = (val) => {
-  pageSize.value = val
-  getWriter()
-}
+  pageSize.value = val;
+  getWriter();
+};
 //currentPage发生变化触发
 const handleCurrentChange = (val) => {
-  currentPage.value = val
-  getWriter()
-}
+  currentPage.value = val;
+  getWriter();
+};
 //获取朝代信息
 const getDynasty = async () => {
-  let res = await reqGetDynasty()
+  let res = await reqGetDynasty();
   if (res.code != 1) {
     return ElMessage({
-      type: 'error',
-      message: '获取朝代数据失败'
-    })
+      type: "error",
+      message: "获取朝代数据失败",
+    });
   }
-  dynastyList.value = res.data
-  getWriter()
-}
+  dynastyList.value = res.data;
+  getWriter();
+};
 //获取诗人信息
 const getWriter = async () => {
   //拿到朝代信息
-  let dynasty = dynastyList.value[dynastyIndex.value] || ''
-  let res = await reqGetWriter(dynasty, currentPage.value, pageSize.value)
+  let dynasty = dynastyList.value[dynastyIndex.value] || "";
+  let res = await reqGetWriter(dynasty, currentPage.value, pageSize.value);
   if (res.code != 1) {
     return ElMessage({
-      type: 'error',
-      message: '获取诗人数据失败'
-    })
+      type: "error",
+      message: "获取诗人数据失败",
+    });
   }
-  writerList.value = res.data.records
-  total.value = res.data.total
-}
+  writerList.value = res.data.records;
+  total.value = res.data.total;
+};
 //触发子组件的自定义事件
 const changePoetryDetail = (val) => {
   //重新发送请求
-  dynastyIndex.value = val.Index
-  getWriter()
-}
+  dynastyIndex.value = val.Index;
+  getWriter();
+};
 onMounted(() => {
-  getDynasty()
-})
+  getDynasty();
+});
 </script>
 
 <style lang="scss" scoped>
