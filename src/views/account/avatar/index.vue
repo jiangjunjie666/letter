@@ -14,7 +14,6 @@
       <div class="file" @click="imgUpload">
         <el-icon size="50" style="color: #e6e0e0; cursor: pointer; width: 100%; height: 100%" @click="changeFileUp"><Plus /> </el-icon>
       </div> -->
-
       <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
         <img v-if="imageUrl" :src="imageUrl" class="Avatar" />
         <el-icon v-else class="avatar-uploader-icon">选择头像<Plus /></el-icon>

@@ -10,11 +10,14 @@
       </div>
       <div class="heart">
         <div class="header">
-          <div class="hot" :class="{ active: active === 'hot' }" @click="active = 'hot'">热门</div>
-          <div class="new" :class="{ active: active === 'new' }" @click="active = 'new'">最新</div>
-          <div class="follow" :class="{ active: active === 'follow' }" @click="active = 'follow'">关注</div>
+          <div class="hot" :class="{ active: activeType === 1 }" @click="activeType = 1">热门</div>
+          <div class="new" :class="{ active: activeType === 2 }" @click="activeType = 2">最新</div>
+          <div class="follow" :class="{ active: activeType === 3 }" @click="activeType = 3">关注</div>
         </div>
-        <CommunityCard v-for="i in 4"></CommunityCard>
+        <div class="load" v-if="loading">
+          <Loading />
+        </div>
+        <CommunityCard v-loading="true" v-for="item in communityList" :key="item.id" :communityList="item" @changeLikeNum="changeLikeNum"> </CommunityCard>
       </div>
     </div>
     <div class="communityRight">
@@ -43,12 +46,51 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import CommunityCard from '@/component/communityCard/index.vue'
+import { reqGetCommunityList } from '@/api/module/community.js'
+import CommunityCard from '@/components/communityCard/index.vue'
+import Loading from '@/components/loadingCard/index.vue'
+import { ElMessage } from 'element-plus'
+import useUserStore from '@/store/modules/user.js'
+const userStore = useUserStore()
 //记录当前选择的排列方式
-let active = ref('hot')
+let activeType = ref(1)
 let $router = useRouter()
+let page = ref(1)
+let pageSize = ref(5)
+//社区数据
+let communityList = ref([])
+//加载框
+let loading = ref(true)
+//获取社区数据
+const getCommunityList = async () => {
+  const res = await reqGetCommunityList(page.value, pageSize.value, activeType.value, userStore.userInfo.userId)
+  if (res.code !== 1) {
+    return ElMessage({
+      message: res.msg,
+      type: 'error',
+      duration: 2000
+    })
+  } else {
+    communityList.value = res.data.records
+    loading.value = false
+  }
+}
+//接受自定义事件
+const changeLikeNum = (id) => {
+  //根据id遍历社区数据
+  communityList.value.forEach((item) => {
+    if (item.id === id) {
+      item.like += 1
+      //还要将其是否点赞改为点赞
+      item.tisLike = true
+    }
+  })
+}
+onMounted(() => {
+  getCommunityList()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -109,6 +151,13 @@ let $router = useRouter()
         &:hover {
           color: #529dff;
         }
+      }
+      .load {
+        width: 100%;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }

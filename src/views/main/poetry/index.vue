@@ -9,7 +9,7 @@
         <DetailItem :shamdT="false" title="类型" :detailList="form" @changePoetryDetail="changePoetryDetail"></DetailItem>
       </div>
       <el-empty description="暂时没有数据" v-if="portryList.length == 0" />
-      <ProtryDetailCard v-for="(item, index) in portryList" :AllText="item"> </ProtryDetailCard>
+      <ProtryDetailCard v-for="(item, index) in portryList" :AllText="item" @click="goDetail(item)" :key="index"> </ProtryDetailCard>
       <el-pagination
         class="pagination"
         v-model:current-page="currentPage"
@@ -34,16 +34,18 @@
 </template>
 
 <script setup>
-import DetailItem from '@/component/detailItem/index.vue'
-import ProtryDetailCard from '@/component/poetryDetailCard/index.vue'
-import NewCard from '@/component/newCard/index.vue'
+import DetailItem from '@/components/detailItem/index.vue'
+import ProtryDetailCard from '@/components/poetryDetailCard/index.vue'
+import NewCard from '@/components/newCard/index.vue'
 import { ref, onMounted } from 'vue'
 import { reqGetDetail, reqGetPoetryList } from '@/api/module/poetry.js'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
+let $router = useRouter()
 //定义分页器中的参数
 let currentPage = ref(1) //当前页码
 let pageSize = ref(10) //每页数据条数
-let total = ref(50) //总数据条数
+let total = ref(0) //总数据条数
 //定义分类的数据
 let dynasty = ref([]) //朝代
 let form = ref([]) //分类
@@ -85,7 +87,7 @@ const getDetailList = async () => {
 }
 //获取下面的具体数据
 const getPoetryList = async () => {
-  let ip = '172.16.40.33'
+  let ip = '172.16.40.32'
   //先根据对应的索引拿到相应的关键字s
   let Dynasty = dynasty.value[dynastyIndex.value] || ''
   let Form = form.value[formIndex.value] || ''
@@ -115,6 +117,11 @@ const changePoetryDetail = (val) => {
   }
   //重新获取数据
   getPoetryList()
+}
+//跳转至详情页
+const goDetail = (item) => {
+  //路由跳转携带参数
+  $router.push('/detail/poetry?name=' + item.head)
 }
 //组件挂载获取数据
 onMounted(() => {

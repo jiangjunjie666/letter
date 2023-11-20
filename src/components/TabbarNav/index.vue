@@ -60,7 +60,6 @@ const moverLoginCard = () => {
 }
 //接收登录组件的通知，关闭登陆组件
 const loginChange = () => {
-  console.log(1)
   dialogVisible.value = false
 }
 onMounted(() => {})

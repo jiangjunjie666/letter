@@ -2,6 +2,7 @@
 import { homeLayoutRouter } from './homeLayout'
 import { accontLayoutRouter } from './accountLayout'
 import { createLayoutRouter } from './createLayout'
+import { detailLayoutRouter } from './detailLayout'
 //主页路由
 export const homeRouter = [
   {
@@ -44,6 +45,15 @@ export const homeRouter = [
     children: createLayoutRouter,
     meta: {
       title: '创作'
+    }
+  },
+  {
+    path: '/detail',
+    component: () => import('@/views/detail/index.vue'),
+    name: 'detail',
+    children: detailLayoutRouter,
+    meta: {
+      title: '详情'
     }
   }
 ]

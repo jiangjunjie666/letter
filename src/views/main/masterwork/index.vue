@@ -29,9 +29,9 @@
 </template>
 
 <script setup>
-import DetailItem from '@/component/detailItem/index.vue'
-import NewCard from '@/component/newCard/index.vue'
-import ProtryDetailCard from '@/component/poetryDetailCard/index.vue'
+import DetailItem from '@/components/detailItem/index.vue'
+import NewCard from '@/components/newCard/index.vue'
+import ProtryDetailCard from '@/components/poetryDetailCard/index.vue'
 import { ref } from 'vue'
 //定义分页器中的参数
 let currentPage = ref(1) //当前页码
