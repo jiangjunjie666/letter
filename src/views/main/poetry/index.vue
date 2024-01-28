@@ -9,20 +9,15 @@
         <DetailItem :shamdT="false" title="类型" :detailList="form" @changePoetryDetail="changePoetryDetail"></DetailItem>
       </div>
       <el-empty description="暂时没有数据" v-if="portryList.length == 0" />
-      <ProtryDetailCard v-for="(item, index) in portryList" :AllText="item" @click="goDetail(item)" :key="index"> </ProtryDetailCard>
-      <el-pagination
-        class="pagination"
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[5, 10, 15, 20]"
-        :small="small"
-        :disabled="disabled"
-        :background="background"
-        layout="  sizes, prev, pager, next, jumper,total"
-        :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      ></el-pagination>
+      <div class="pro">
+        <ProtryDetailCard v-for="(item, index) in portryList" :AllText="item" @click="goDetail(item)" :key="index">
+        </ProtryDetailCard>
+      </div>
+
+      <el-pagination class="pagination" v-model:current-page="currentPage" v-model:page-size="pageSize"
+        :page-sizes="[5, 10, 15, 20]" :small="small" :disabled="disabled" :background="background"
+        layout="  sizes, prev, pager, next, jumper,total" :total="total" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"></el-pagination>
     </div>
     <div class="right">
       <div class="recomm">
@@ -34,116 +29,137 @@
 </template>
 
 <script setup>
-import DetailItem from '@/components/detailItem/index.vue'
-import ProtryDetailCard from '@/components/poetryDetailCard/index.vue'
-import NewCard from '@/components/newCard/index.vue'
-import { ref, onMounted } from 'vue'
-import { reqGetDetail, reqGetPoetryList } from '@/api/module/poetry.js'
-import { ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
-let $router = useRouter()
+import DetailItem from "@/components/detailItem/index.vue";
+import ProtryDetailCard from "@/components/poetryDetailCard/index.vue";
+import NewCard from "@/components/newCard/index.vue";
+import { ref, onMounted } from "vue";
+import { reqGetDetail, reqGetPoetryList } from "@/api/module/poetry.js";
+import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+let $router = useRouter();
 //定义分页器中的参数
-let currentPage = ref(1) //当前页码
-let pageSize = ref(10) //每页数据条数
-let total = ref(0) //总数据条数
+let currentPage = ref(1); //当前页码
+let pageSize = ref(5); //每页数据条数
+let total = ref(0); //总数据条数
 //定义分类的数据
-let dynasty = ref([]) //朝代
-let form = ref([]) //分类
-let type = ref([]) //类型
-let writer = ref([]) //作者
+let dynasty = ref([]); //朝代
+let form = ref([]); //分类
+let type = ref([]); //类型
+let writer = ref([]); //作者
 //定义关键字的索引
-let dynastyIndex = ref(-1) //朝代
-let formIndex = ref(-1) //分类
-let typeIndex = ref(-1) //类型
-let writerIndex = ref(-1) //作者
+let dynastyIndex = ref(-1); //朝代
+let formIndex = ref(-1); //分类
+let typeIndex = ref(-1); //类型
+let writerIndex = ref(-1); //作者
 //诗词列表
-let portryList = ref([])
+let portryList = ref([]);
 //分页器触发事件
 //pageSize发生变化触发
 const handleSizeChange = (val) => {
-  pageSize.value = val
-  getPoetryList()
-}
+  pageSize.value = val;
+  getPoetryList();
+};
 //currentPage发生变化触发
 const handleCurrentChange = (val) => {
-  currentPage.value = val
-  getPoetryList()
-}
+  currentPage.value = val;
+  getPoetryList();
+  // 页面跳转到最顶上
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
 //获取分类的数据
 const getDetailList = async () => {
-  let res = await reqGetDetail()
+  let res = await reqGetDetail();
   if (res.code != 1) {
     ElMessage({
-      type: 'error',
-      message: res.msg
-    })
-    return false
+      type: "error",
+      message: res.msg,
+    });
+    return false;
   }
-  dynasty.value = res.data.dynasty
-  form.value = res.data.form
-  type.value = res.data.type
-  writer.value = res.data.writer
-  return true
-}
+  dynasty.value = res.data.dynasty;
+  form.value = res.data.form;
+  type.value = res.data.type;
+  writer.value = res.data.writer;
+  return true;
+};
 //获取下面的具体数据
 const getPoetryList = async () => {
-  let ip = '172.16.40.32'
+  let ip = import.meta.env.VITE_IP;
   //先根据对应的索引拿到相应的关键字s
-  let Dynasty = dynasty.value[dynastyIndex.value] || ''
-  let Form = form.value[formIndex.value] || ''
-  let Type = type.value[typeIndex.value] || ''
-  let Writer = writer.value[writerIndex.value] || ''
+  let Dynasty = dynasty.value[dynastyIndex.value] || "";
+  let Form = form.value[formIndex.value] || "";
+  let Type = type.value[typeIndex.value] || "";
+  let Writer = writer.value[writerIndex.value] || "";
 
-  let res = await reqGetPoetryList(Dynasty, Form, ip, currentPage.value, pageSize.value, Type, Writer)
+  let res = await reqGetPoetryList(
+    Dynasty,
+    Form,
+    ip,
+    currentPage.value,
+    pageSize.value,
+    Type,
+    Writer
+  );
   if (res.code != 1) {
     return ElMessage({
-      type: 'error',
-      message: '获取数据失败'
-    })
+      type: "error",
+      message: "获取数据失败",
+    });
   }
-  portryList.value = res.data.records
-  total.value = res.data.total
-}
+  portryList.value = res.data.records;
+  total.value = res.data.total;
+};
 //触发自定义事件，选择了分类的元素
 const changePoetryDetail = (val) => {
-  if (val.type == '风格') {
-    typeIndex.value = val.Index
-  } else if (val.type == '诗人') {
-    writerIndex.value = val.Index
-  } else if (val.type == '朝代') {
-    dynastyIndex.value = val.Index
+  if (val.type == "风格") {
+    typeIndex.value = val.Index;
+  } else if (val.type == "诗人") {
+    writerIndex.value = val.Index;
+  } else if (val.type == "朝代") {
+    dynastyIndex.value = val.Index;
   } else {
-    formIndex.value = val.Index
+    formIndex.value = val.Index;
   }
   //重新获取数据
-  getPoetryList()
-}
+  getPoetryList();
+};
 //跳转至详情页
 const goDetail = (item) => {
+  console.log(item);
   //路由跳转携带参数
-  $router.push('/detail/poetry?name=' + item.head)
-}
+  $router.push({
+    path: "/detail/poetry?id=",
+    query: {
+      id: item.id,
+    },
+  });
+};
 //组件挂载获取数据
 onMounted(() => {
-  let data = getDetailList()
+  let data = getDetailList();
   data.then((res) => {
     if (res) {
-      getPoetryList()
+      getPoetryList();
     }
-  })
-})
+  });
+});
 </script>
 
 <style lang="scss" scoped>
 .container {
   display: flex;
   justify-content: space-around;
+
   .detail {
     width: 900px;
     margin-bottom: 20px;
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 1px 2px 3px 4px #e2e2e2;
+
     .title {
       font-size: 25px;
       padding: 20px 0 10px 0px;
@@ -152,13 +168,20 @@ onMounted(() => {
       border-bottom: 2px dashed var(--el-border-color);
     }
   }
+
   .recomm {
     margin-bottom: 20px;
   }
 }
+
 .pagination {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+}
+
+.pro {
+  //过度动画
+  transition: $windowScroll;
 }
 </style>

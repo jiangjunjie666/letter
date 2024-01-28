@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open",
-    "build": "vite build",
+    "build": "vite build --mode production",
     "preview": "vite preview"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
-    "@vueuse/core": "^10.5.0",
+    "@vueuse/core": "^10.7.1",
     "axios": "^1.5.1",
     "element-plus": "^2.4.1",
     "pinia": "^2.1.7",

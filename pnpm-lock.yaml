@@ -9,8 +9,8 @@ dependencies:
     specifier: ^2.1.0
     version: registry.npmmirror.com/@element-plus/icons-vue@2.1.0(vue@3.3.4)
   '@vueuse/core':
-    specifier: ^10.5.0
-    version: registry.npmmirror.com/@vueuse/core@10.5.0(vue@3.3.4)
+    specifier: ^10.7.1
+    version: registry.npmmirror.com/@vueuse/core@10.7.1(vue@3.3.4)
   axios:
     specifier: ^1.5.1
     version: registry.npmmirror.com/axios@1.5.1
@@ -385,10 +385,10 @@ packages:
     version: 0.0.16
     dev: false
 
-  registry.npmmirror.com/@types/web-bluetooth@0.0.18:
-    resolution: {integrity: sha512-v/ZHEj9xh82usl8LMR3GarzFY1IrbXJw5L4QfQhokjRV91q+SelFqxQWSep1ucXEZ22+dSTwLFkXeur25sPIbw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/web-bluetooth/-/web-bluetooth-0.0.18.tgz}
+  registry.npmmirror.com/@types/web-bluetooth@0.0.20:
+    resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/web-bluetooth/-/web-bluetooth-0.0.20.tgz}
     name: '@types/web-bluetooth'
-    version: 0.0.18
+    version: 0.0.20
     dev: false
 
   registry.npmmirror.com/@vitejs/plugin-vue@4.2.3(vite@4.4.5)(vue@3.3.4):
@@ -505,15 +505,15 @@ packages:
     name: '@vue/shared'
     version: 3.3.4
 
-  registry.npmmirror.com/@vueuse/core@10.5.0(vue@3.3.4):
-    resolution: {integrity: sha512-z/tI2eSvxwLRjOhDm0h/SXAjNm8N5ld6/SC/JQs6o6kpJ6Ya50LnEL8g5hoYu005i28L0zqB5L5yAl8Jl26K3A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/core/-/core-10.5.0.tgz}
-    id: registry.npmmirror.com/@vueuse/core/10.5.0
+  registry.npmmirror.com/@vueuse/core@10.7.1(vue@3.3.4):
+    resolution: {integrity: sha512-74mWHlaesJSWGp1ihg76vAnfVq9NTv1YT0SYhAQ6zwFNdBkkP+CKKJmVOEHcdSnLXCXYiL5e7MaewblfiYLP7g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/core/-/core-10.7.1.tgz}
+    id: registry.npmmirror.com/@vueuse/core/10.7.1
     name: '@vueuse/core'
-    version: 10.5.0
+    version: 10.7.1
     dependencies:
-      '@types/web-bluetooth': registry.npmmirror.com/@types/web-bluetooth@0.0.18
-      '@vueuse/metadata': registry.npmmirror.com/@vueuse/metadata@10.5.0
-      '@vueuse/shared': registry.npmmirror.com/@vueuse/shared@10.5.0(vue@3.3.4)
+      '@types/web-bluetooth': registry.npmmirror.com/@types/web-bluetooth@0.0.20
+      '@vueuse/metadata': registry.npmmirror.com/@vueuse/metadata@10.7.1
+      '@vueuse/shared': registry.npmmirror.com/@vueuse/shared@10.7.1(vue@3.3.4)
       vue-demi: registry.npmmirror.com/vue-demi@0.14.6(vue@3.3.4)
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -535,10 +535,10 @@ packages:
       - vue
     dev: false
 
-  registry.npmmirror.com/@vueuse/metadata@10.5.0:
-    resolution: {integrity: sha512-fEbElR+MaIYyCkeM0SzWkdoMtOpIwO72x8WsZHRE7IggiOlILttqttM69AS13nrDxosnDBYdyy3C5mR1LCxHsw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/metadata/-/metadata-10.5.0.tgz}
+  registry.npmmirror.com/@vueuse/metadata@10.7.1:
+    resolution: {integrity: sha512-jX8MbX5UX067DYVsbtrmKn6eG6KMcXxLRLlurGkZku5ZYT3vxgBjui2zajvUZ18QLIjrgBkFRsu7CqTAg18QFw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/metadata/-/metadata-10.7.1.tgz}
     name: '@vueuse/metadata'
-    version: 10.5.0
+    version: 10.7.1
     dev: false
 
   registry.npmmirror.com/@vueuse/metadata@9.13.0:
@@ -547,11 +547,11 @@ packages:
     version: 9.13.0
     dev: false
 
-  registry.npmmirror.com/@vueuse/shared@10.5.0(vue@3.3.4):
-    resolution: {integrity: sha512-18iyxbbHYLst9MqU1X1QNdMHIjks6wC7XTVf0KNOv5es/Ms6gjVFCAAWTVP2JStuGqydg3DT+ExpFORUEi9yhg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/shared/-/shared-10.5.0.tgz}
-    id: registry.npmmirror.com/@vueuse/shared/10.5.0
+  registry.npmmirror.com/@vueuse/shared@10.7.1(vue@3.3.4):
+    resolution: {integrity: sha512-v0jbRR31LSgRY/C5i5X279A/WQjD6/JsMzGa+eqt658oJ75IvQXAeONmwvEMrvJQKnRElq/frzBR7fhmWY5uLw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vueuse/shared/-/shared-10.7.1.tgz}
+    id: registry.npmmirror.com/@vueuse/shared/10.7.1
     name: '@vueuse/shared'
-    version: 10.5.0
+    version: 10.7.1
     dependencies:
       vue-demi: registry.npmmirror.com/vue-demi@0.14.6(vue@3.3.4)
     transitivePeerDependencies:
