@@ -12,7 +12,11 @@ const API = {
   //修改资料
   updateUserInfo: '/user/update',
   //修改头像
-  updateAvatar: '/user/updateUserImage'
+  updateAvatar: '/user/updateUserImage',
+  //关注
+  follow: '/user/carefor',
+  //获取粉丝列表
+  fansList: '/user/getFan'
 }
 
 //账号注册
@@ -38,4 +42,14 @@ export const reqUpdateUserInfo = (data) => {
 //修改头像
 export const reqUpdateAvatar = (data) => {
   return http.post(API.updateAvatar, data)
+}
+
+//关注
+export const reqFollow = (data) => {
+  return http.post(API.follow, data)
+}
+
+//获取粉丝列表
+export const reqFansList = (userId) => {
+  return http.get(API.fansList + `?userId=${userId}`)
 }

@@ -17,8 +17,9 @@
       </div>
       <!-- 图片墙 -->
       <div class="imgList">
-        <el-image style="width: 100px; height: 100px" :key="i" v-for="i in communityList.images" :src="i" :zoom-rate="1.2"
-          :max-scale="7" :min-scale="0.2" :preview-src-list="communityList.images" :initial-index="4" fit="cover" />
+        <el-image style="width: 100px; height: 100px" :key="i" v-for="i in communityList.images" :src="i"
+          :zoom-rate="1.2" :max-scale="7" :min-scale="0.2" :preview-src-list="communityList.images" :initial-index="4"
+          fit="cover" />
       </div>
       <!-- 等人赞过 -->
       <div class="praise" @click="showLikeList">
@@ -34,7 +35,8 @@
           <div class="likeListCard">
             <img :src="i.image" alt="" />
             <h1>{{ i.name }}</h1>
-            <el-button type="primary" class="likebtn" v-if="i.userId != userStore.userInfo.userId">关注</el-button>
+            <el-button type="primary" class="likebtn" v-if="i.userId != userStore.userInfo.userId"
+              @click="follow(i)">关注</el-button>
           </div>
         </div>
       </el-dialog>
@@ -76,7 +78,7 @@
     <el-button type="primary" class="send" @click="sendPostComment" :disabled="reviewText == ''">发送</el-button>
     <!-- 展示所有的评论 -->
     <div class="allReview">
-      <div class="sort">
+      <div class="sort" v-if="commentList.length > 0">
         <h1 :class="{ active: sortReviewActive == 'hot' }" @click="sortReviewActive = 'hot'">
           最热
         </h1>
@@ -105,7 +107,7 @@
       </div>
       <!-- 底部展开更多评论 -->
       <el-button v-if="commentList.length < totalReview" class="more" @click="moreReview">查看全部{{ totalReview -
-        commentList.length }}条评论</el-button>
+          commentList.length }}条评论</el-button>
     </div>
   </div>
 </template>
@@ -120,6 +122,7 @@ import {
   reqGetLikeList,
 } from "@/api/module/community.js";
 import useUserStore from "@/store/modules/user.js";
+import { reqFollow } from "@/api/module/user";
 import { ElMessage } from "element-plus";
 const userStore = useUserStore();
 //评论区的开关
@@ -260,6 +263,26 @@ const tagList = computed(() => {
   return props.communityList.label.split(",").filter(Boolean);
 });
 
+//关注
+const follow = async (i) => {
+  const data = {
+    userIdA: userStore.userInfo.userId,
+    userIdB: i.userId,
+  };
+  const res = await reqFollow(data);
+  if (res.code == 1) {
+    ElMessage({
+      type: "success",
+      message: "关注成功",
+    });
+    i.follow = true;
+  } else {
+    ElMessage({
+      type: "error",
+      message: res.msg,
+    });
+  }
+};
 onMounted(() => {
   getLikeList();
 });

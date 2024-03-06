@@ -17,32 +17,39 @@
             <li :class="{ active: $route.name == 'poetry' }" @click="goLayout('/poetry')">
               诗词
             </li>
-            <li :class="{ active: $route.name == 'masterwork' }" @click="goLayout('/masterwork')">
-              名著
-            </li>
             <li :class="{ active: $route.name == 'writar' }" @click="goLayout('/writar')">
               诗人
             </li>
             <li :class="{ active: $route.name == 'community' }" @click="goLayout('/community')">
               社区
             </li>
-            <li :class="{ active: $route.name == 'footmark' }" @click="goLayout('/footmark')">
-              足迹
-            </li>
-            <li :class="{ active: $route.name == 'friend' }" @click="goLayout('/friend')">
-              消息
-            </li>
+            <el-popover placement="bottom" trigger="hover">
+              <template #reference>
+                <li :class="{ active: $route.path.split('/')[1] == 'friend' }">消息</li>
+              </template>
+              <div class="list">
+                <p style="margin-bottom: 10px; cursor: pointer" @click="goLayout('/friend/fans')">
+                  新增粉丝
+                </p>
+                <p style="margin-bottom: 10px; cursor: pointer" @click="goLayout('/friend/like')">
+                  点赞
+                </p>
+                <p style="margin-bottom: 10px; cursor: pointer" @click="goLayout('/friend/code')">
+                  私信
+                </p>
+              </div>
+            </el-popover>
           </ul>
         </div>
         <div class="login" @click="goLogin" :class="{ none: Object.keys(userStore.userInfo).length != 0 }">
           <el-tooltip class="box-item" effect="dark" content="登录享受所有功能" placement="right-end">
-            <h1 v-if="Object.keys(userStore.userInfo).length == 0" @click="dialogVisible = true">
+            <h1 v-if="Object.keys(userStore.userInfo).length == 0" @click="$router.push('/login')">
               登录
             </h1>
           </el-tooltip>
-          <el-dialog v-model="dialogVisible" width="768px" :before-close="handleClose">
+          <!-- <el-dialog v-model="dialogVisible" width="768px" :before-close="handleClose">
             <GetLoginCard @loginChange="loginChange"></GetLoginCard>
-          </el-dialog>
+          </el-dialog> -->
           <img v-if="Object.keys(userStore.userInfo).length != 0" ref="avatar" :src="userStore.userInfo.image" alt="头像"
             :class="{ avatarShow: loginCardShow }" @mouseenter="CardHandler" v-popover="popoverRef"
             v-click-outside="onClickOutside" />
@@ -67,13 +74,14 @@ import { ClickOutside as vClickOutside } from "element-plus";
 
 const popoverRef = ref();
 const onClickOutside = () => {
-  unref(popoverRef).popperRef?.delayHide?.();
+  // unref(popoverRef).popperRef?.delayHide?.();
 };
 let userStore = useUserStore();
 let $router = useRouter();
 let $route = useRoute();
+console.log($route.path.split("/"));
 let loginCardShow = ref(false);
-let dialogVisible = ref(false);
+// let dialogVisible = ref(false);
 const goLayout = (path) => {
   //路由跳转
   $router.push(path);
@@ -90,7 +98,8 @@ const moverLoginCard = () => {
 };
 //接收登录组件的通知，关闭登陆组件
 const loginChange = () => {
-  dialogVisible.value = false;
+  //跳转至登录页面
+  $router.push("/login");
 };
 
 //退出登录
@@ -98,7 +107,7 @@ const loginOut = () => {
   //清除本地userinfo
   userStore.loginOut();
   //刷新页面
-  $router.push("/");
+  $router.push("/login");
 };
 onMounted(() => { });
 </script>

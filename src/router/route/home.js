@@ -55,5 +55,13 @@ export const homeRouter = [
     meta: {
       title: '详情'
     }
+  },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index.vue'),
+    name: 'login',
+    meta: {
+      title: '登录'
+    }
   }
 ]

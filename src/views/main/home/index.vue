@@ -15,8 +15,10 @@
         <!-- 今日推荐 -->
         <div class="today-recomme">
           <h1>今日推荐诗词</h1>
-          <ProtryDetailCard v-for="(item, index) in poetryList1" :AllText="item" @click="goDetail(item)" :key="index">
-          </ProtryDetailCard>
+          <div class="card">
+            <ProtryDetailCard v-for="(item, index) in poetryList1" :AllText="item" @click="goDetail(item)" :key="index">
+            </ProtryDetailCard>
+          </div>
         </div>
         <!-- 今日热帖 -->
         <!-- <h1 style="font-size: 2em; color: #99a9bf; padding: 10px">今日热帖</h1>
@@ -66,7 +68,7 @@
             <div class="resource">
               <p>{{ i.name }}</p>
             </div>
-            <el-button class="btn">关注</el-button>
+            <el-button class="btn" @click="follow(i)">关注</el-button>
           </div>
         </div>
       </div>
@@ -77,10 +79,12 @@
 <script setup>
 import { reqGetPoetryList } from "@/api/module/poetry";
 import { reqGetRecommendAuthor } from "@/api/module/home";
+import { reqFollow } from "@/api/module/user";
 import { ref, onMounted } from "vue";
 import ProtryDetailCard from "@/components/poetryDetailCard/index.vue";
 import { useRouter } from "vue-router";
 import useUserStore from "@/store/modules/user";
+import { ElMessage } from "element-plus";
 const userStore = useUserStore();
 const $router = useRouter();
 const poetryList1 = ref([]);
@@ -111,6 +115,27 @@ const getPoetryList = async () => {
   }
 };
 
+//关注
+const follow = async (item) => {
+  console.log(item);
+  const data = {
+    userIdA: userStore.userInfo.userId,
+    userIdB: item.userId,
+  };
+  const res = await reqFollow(data);
+  if (res.code == 1) {
+    ElMessage({
+      type: "success",
+      message: "关注成功",
+      duration: 1000,
+    });
+  } else {
+    ElMessage({
+      type: "error",
+      message: res.msg,
+    });
+  }
+};
 //跳转至详情页
 const goDetail = (item) => {
   console.log(item);
@@ -153,7 +178,7 @@ onMounted(() => {
   justify-content: space-between;
 
   .left {
-    width: 1000px;
+    width: 920px;
     // height: 1050px;
     background-color: #fff;
     border-radius: 1em;
@@ -164,6 +189,10 @@ onMounted(() => {
         font-size: 2em;
         color: #99a9bf;
         padding: 10px;
+      }
+
+      .card {
+        margin-left: 10px;
       }
 
       .item {

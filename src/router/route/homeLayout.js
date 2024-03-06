@@ -1,3 +1,4 @@
+import { friendLayoutRoute } from './friendLayout'
 export const homeLayoutRouter = [
   {
     path: '/home',
@@ -7,12 +8,8 @@ export const homeLayoutRouter = [
   {
     path: '/friend',
     component: () => import('@/views/main/friend/index.vue'),
-    name: 'friend'
-  },
-  {
-    path: '/masterwork',
-    component: () => import('@/views/main/masterwork/index.vue'),
-    name: 'masterwork'
+    name: 'friend',
+    children: friendLayoutRoute
   },
   {
     path: '/poetry',
@@ -28,10 +25,5 @@ export const homeLayoutRouter = [
     path: '/community',
     component: () => import('@/views/main/community/index.vue'),
     name: 'community'
-  },
-  {
-    path: '/footmark',
-    component: () => import('@/views/main/footmark/index.vue'),
-    name: 'footmark'
   }
 ]
