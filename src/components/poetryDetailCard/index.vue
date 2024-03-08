@@ -19,7 +19,7 @@
 <script setup>
 import { ref } from 'vue'
 let openAll = ref(false)
-let goDetail = () => {}
+let goDetail = () => { }
 let props = defineProps({
   btnText: {
     type: String,
@@ -41,11 +41,13 @@ let props = defineProps({
   margin: 10px 0;
   display: flex;
   justify-content: space-around;
-  transition: 0.5s all;
+  transition: 0.3s all;
   cursor: pointer;
+
   &:hover {
-    box-shadow: 1px 2px 3px 4px #d1cdcd;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .1);
   }
+
   .img {
     width: 200px;
     height: 100%;
@@ -54,10 +56,12 @@ let props = defineProps({
     justify-content: center;
     align-items: center;
     position: relative;
+
     img {
       width: 200px;
       height: 90%;
     }
+
     .era {
       position: absolute;
       top: 20px;
@@ -69,15 +73,18 @@ let props = defineProps({
       font-size: 12px;
     }
   }
+
   .text {
     width: 620px;
     height: 100%;
     position: relative;
+
     .title {
       font-size: 20px;
       font-weight: bold;
       padding: 10px 0;
     }
+
     p {
       padding: 5px;
       line-height: 25px;
@@ -88,21 +95,26 @@ let props = defineProps({
       -webkit-line-clamp: 3; //显示3行
       -webkit-box-orient: vertical;
       // white-space: nowrap; /* 保持文本在一行内 */
-      overflow: hidden; /* 隐藏溢出的文本 */
-      text-overflow: ellipsis; /* 使用省略号表示溢出的文本 */
+      overflow: hidden;
+      /* 隐藏溢出的文本 */
+      text-overflow: ellipsis;
+      /* 使用省略号表示溢出的文本 */
       // width: 100%; /* 设置容器宽度，可以根据需要调整 */
     }
+
     .time {
       margin: 50px 0 0 50px;
       font-size: 15px;
       color: #797474;
       float: left;
     }
+
     .writer {
       float: left;
       margin: 50px 0 0 50px;
       color: #797474;
     }
+
     .btn {
       position: absolute;
       top: 70%;

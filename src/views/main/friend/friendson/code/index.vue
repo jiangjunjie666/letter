@@ -61,8 +61,6 @@ const activeIndex = ref(-1);
         background-color: #f5f5f5;
       }
 
-      // 最后一个元素无下划线
-
       img {
         width: 40px;
         height: 40px;

@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { reqFansList, reqFollow } from "@/api/module/user.js";
+import { reqFansList } from "@/api/module/user.js";
 import { ref, onMounted } from "vue";
 import useUserStore from "@/store/modules/user";
 const userStore = useUserStore();
@@ -35,6 +35,7 @@ onMounted(() => {
   h1 {
     font-size: 16px;
     color: #666;
+    margin-left: 10px;
   }
 
   .fanslist {
@@ -42,7 +43,8 @@ onMounted(() => {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #f0f0f2;
-    padding-bottom: 10px;
+    // padding-bottom: 10px;
+    padding: 0 10px 10px 10px;
 
     img {
       width: 50px;

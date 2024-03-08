@@ -63,5 +63,13 @@ export const homeRouter = [
     meta: {
       title: '登录'
     }
+  },
+  {
+    path: '/search',
+    component: () => import('@/views/search/index.vue'),
+    name: 'search',
+    meta: {
+      title: '搜索'
+    }
   }
 ]

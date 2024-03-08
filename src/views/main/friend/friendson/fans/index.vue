@@ -51,6 +51,7 @@ onMounted(() => {
   h1 {
     font-size: 16px;
     color: #666;
+    margin-left: 10px;
   }
 
   .fanslist {
@@ -58,7 +59,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #f0f0f2;
-    padding-bottom: 10px;
+    padding: 0 10px 10px 10px;
 
     img {
       width: 50px;

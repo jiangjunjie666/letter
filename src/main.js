@@ -3,6 +3,8 @@ import { createApp } from 'vue'
 import '@/style/index.scss'
 //引入路由
 import rouer from '@/router/index.js'
+//引入路由鉴权
+import '@/utils/authentication.js'
 import App from './App.vue'
 //引入element-plus
 import ElementPlus from 'element-plus'
