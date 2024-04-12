@@ -121,7 +121,7 @@ const pasLogin = async () => {
       console.log("成功");
       //成功后关闭登录框，自定义事件通知父组件
       //触发自定义事件
-      // $emit("loginChange");
+      $emit("loginChange");
     })
     .catch((error) => {
       console.log("失败");

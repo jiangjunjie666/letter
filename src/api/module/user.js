@@ -16,7 +16,15 @@ const API = {
   //关注
   follow: '/user/carefor',
   //获取粉丝列表
-  fansList: '/user/getFan'
+  fansList: '/user/getFan',
+  //获取点赞列表
+  likeList: '/know/talks/likeDetailsPage',
+  //修改密码
+  updatePassword: '/user/updatePassword',
+  //获取单个用户的个人信息
+  getUserInfo: '/user',
+  //创建聊天频道
+  createChannel: '/websocket/createTopic'
 }
 
 //账号注册
@@ -52,4 +60,24 @@ export const reqFollow = (data) => {
 //获取粉丝列表
 export const reqFansList = (userId) => {
   return http.get(API.fansList + `?userId=${userId}`)
+}
+
+//获取点赞列表
+export const reqLikeList = (pageNum, pageSize, tobeLikeUserId) => {
+  return http.get(API.likeList + `?pageNum=${pageNum}&pageSize=${pageSize}&tobeLikeUserId=${tobeLikeUserId}`)
+}
+
+//修改密码
+export const reqUpdatePassword = (data) => {
+  return http.put(API.updatePassword, data)
+}
+
+//获取用户信息
+export const reqGetUserInfo = (userId) => {
+  return http.get(API.getUserInfo + `/${userId}`)
+}
+
+//创建聊天频道
+export const reqCreateChannel = (data) => {
+  return http.post(API.createChannel, data)
 }

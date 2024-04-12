@@ -20,34 +20,6 @@
             </ProtryDetailCard>
           </div>
         </div>
-        <!-- 今日热帖 -->
-        <!-- <h1 style="font-size: 2em; color: #99a9bf; padding: 10px">今日热帖</h1>
-        <div class="today-post">
-          <div class="post-card" v-for="i in 6">
-            <div class="post-header">
-              <img class="post-author-avatar" src="@/assets/vue.svg" alt="作者头像" />
-              <p class="post-author">作者：用户123</p>
-            </div>
-            <h2 class="post-title">美丽的晚霞</h2>
-            <p class="post-summary">
-              床前明月光，疑是地上霜。举头望明月，低头思故乡。今夜无眠，满襟尘土。愿得一人心，白头不相离。
-            </p>
-            <div class="post-stats">
-              <p class="post-likes">
-                <el-icon>
-                  <Star />
-                </el-icon>
-                <span>256</span>
-              </p>
-              <p class="post-views">
-                <el-icon>
-                  <ChatLineSquare />
-                </el-icon>
-                <span> 1456</span>
-              </p>
-            </div>
-          </div>
-        </div> -->
       </div>
       <div class="right">
         <!-- 热榜 -->
@@ -68,7 +40,8 @@
             <div class="resource">
               <p>{{ i.name }}</p>
             </div>
-            <el-button class="btn" @click="follow(i)">关注</el-button>
+            <el-button class="btn" @click="follow(i)" v-show="!i.careFor">关注</el-button>
+            <el-button class="btn" v-show="i.careFor">已关注</el-button>
           </div>
         </div>
       </div>
@@ -117,13 +90,18 @@ const getPoetryList = async () => {
 
 //关注
 const follow = async (item) => {
-  console.log(item);
   const data = {
     userIdA: userStore.userInfo.userId,
     userIdB: item.userId,
   };
   const res = await reqFollow(data);
   if (res.code == 1) {
+    //将其修改为已经关注
+    recommendList.value.forEach((i) => {
+      if (i.userId == item.userId) {
+        i.careFor = true;
+      }
+    });
     ElMessage({
       type: "success",
       message: "关注成功",

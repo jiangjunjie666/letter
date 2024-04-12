@@ -65,7 +65,7 @@ const userStore = useUserStore();
 let activeType = ref(2);
 let $router = useRouter();
 let page = ref(1);
-let pageSize = ref(5);
+let pageSize = ref(20);
 //社区数据
 let communityList = ref([]);
 //加载框

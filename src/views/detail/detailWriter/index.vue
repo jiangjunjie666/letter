@@ -30,7 +30,17 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { reqGetPoetryDetail, reqGetWriterDetail } from "@/api/module/poetry";
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from "vue-router";
+const $route = useRoute()
+const $router = useRouter()
+
+let url = 'http://10.2.212.187:8083/static/img/'
+
+
+</script>
 
 <style lang="scss" scoped>
 .detailWriter {

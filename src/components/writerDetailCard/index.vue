@@ -2,7 +2,15 @@
   <div>
     <div class="detailCard" @mouseenter="openAll = true" @mouseleave="openAll = false">
       <div class="img">
-        <img :src="AllText.image" alt="" />
+        <!-- <img :src="AllText.image" alt="" /> -->
+        <el-image :src="AllText.image">
+          <template #error>
+            <div class="image-slot">
+              <span>加载失败</span>
+              <el-icon size="50" class="icon"><icon-picture /></el-icon>
+            </div>
+          </template>
+        </el-image>
         <div class="era">{{ AllText.dynasty }}</div>
       </div>
       <div class="text">
@@ -15,6 +23,7 @@
 </template>
 
 <script setup>
+import { Picture as IconPicture } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 let openAll = ref(false)
 let goDetail = () => { }
@@ -54,6 +63,20 @@ let props = defineProps({
     justify-content: center;
     align-items: center;
     position: relative;
+
+    .image-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      span {
+        color: #c9c7c7;
+      }
+
+      .icon {
+        color: #c9c7c7;
+      }
+    }
 
     img {
       width: 200px;

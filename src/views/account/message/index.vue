@@ -2,9 +2,9 @@
   <div class="box">
     <div class="head">
       <p class="one"></p>
-      <p class="msg">我的信息</p>
+      <p class="msg">个人信息</p>
     </div>
-    <div class="form">
+    <div class="form" v-if="userStore.userInfo.userId == $route.query.userId">
       <el-form :model="form" label-width="120px">
         <el-form-item label="昵称：" label-width="200px">
           <el-input v-model="form.name" style="width: 200px" :placeholder="userStore.userInfo.userName" />
@@ -12,10 +12,6 @@
         <el-form-item label="电话：" label-width="200px">
           <el-input v-model="form.phone" style="width: 200px" :placeholder="userStore.userInfo.phone" />
         </el-form-item>
-        <!-- <el-form-item label="用户名：" label-width="200px">
-          <el-input v-model="form.userId" style="width: 400px" :placeholder="userStore.userInfo.userId" />
-        </el-form-item> -->
-
         <el-form-item label="个性签名：" label-width="200px">
           <el-input v-model="form.signature" type="textarea" style="width: 500px"
             :placeholder="userStore.userInfo.signature" />
@@ -40,14 +36,61 @@
         </el-form-item>
       </el-form>
     </div>
+    <div class="userinfo" v-else>
+      <el-descriptions class="margin-top" title="个人信息" :column="3" :size="size" border>
+        <template #extra>
+          <el-button type="primary" @click="sendMessage">私信他</el-button>
+        </template>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              <el-icon :style="iconStyle">
+                <user />
+              </el-icon>
+              昵称
+            </div>
+          </template>
+          {{ userinfo.name }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              <el-icon :style="iconStyle">
+                <iphone />
+              </el-icon>
+              电话
+            </div>
+          </template>
+          {{ userinfo.phone }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              <el-icon :style="iconStyle">
+                <office-building />
+              </el-icon>
+              Address
+            </div>
+          </template>
+          {{ userinfo.province }}
+        </el-descriptions-item>
+        <el-descriptions-item label="个性签名">{{ userinfo.signature }}</el-descriptions-item>
+        <el-descriptions-item label="性别">{{ userinfo.sex }}</el-descriptions-item>
+        <el-descriptions-item label="生日">{{ userinfo.birthdate }}</el-descriptions-item>
+      </el-descriptions>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import useUserStore from "@/store/modules/user.js";
-import { reqUpdateUserInfo } from "@/api/module/user.js";
+import { reqUpdateUserInfo, reqGetUserInfo, reqCreateChannel } from "@/api/module/user.js";
 import { ElMessage } from "element-plus";
+import { useRoute, useRouter } from 'vue-router'
+const userinfo = ref({})
+const $router = useRouter()
+const $route = useRoute()
 const userStore = useUserStore();
 const chineseProvinces = [
   {
@@ -119,7 +162,52 @@ const onSubmit = async () => {
     });
   }
 };
+
+//获取用户的信息
+const getUserInfo = async () => {
+  let res = await reqGetUserInfo($route.query.userId);
+  if (res.code != 1) {
+    return ElMessage({
+      type: "error",
+      message: "获取失败",
+    });
+  } else {
+    //更新本地数据
+    userinfo.value = res.data;
+  }
+};
+//跳转到聊天页面
+const sendMessage = async () => {
+  //先创建聊天频道
+  const data = {
+    userIdA: userStore.userInfo.userId,
+    userIdB: $route.query.userId,
+  }
+  const res = await reqCreateChannel(data)
+  if (res.code == 1) {
+    $router.push({
+      path: "/friend/code",
+      query: {
+        userId: $route.query.userId,
+      },
+    });
+  } else {
+    ElMessage({
+      type: "error",
+      message: res.msg,
+    })
+  }
+
+}
+onMounted(() => {
+  if ($route.query.userId !== userStore.userInfo.userId) {
+    getUserInfo();
+  }
+});
+
+
 </script>
+
 
 <style lang="scss" scoped>
 .box {
@@ -149,5 +237,10 @@ const onSubmit = async () => {
   .form {
     margin-top: 20px;
   }
+}
+
+.userinfo {
+  width: 90%;
+  margin: 20px auto;
 }
 </style>

@@ -5,7 +5,7 @@
         <div class="logo">眷诗词</div>
         <div class="ipt">
           <input type="text" placeholder="搜索" />
-          <el-icon size="16" class="icon-search">
+          <el-icon size="25" class="icon-search">
             <Search />
           </el-icon>
         </div>
@@ -58,7 +58,7 @@
             v-click-outside="onClickOutside" />
           <el-popover ref="popoverRef" trigger="hover" virtual-triggering persistent>
             <div class="btn">
-              <el-button class="btn1" type="success" @click="$router.push('/account')">个人中心</el-button>
+              <el-button class="btn1" type="success" @click="goMine">个人中心</el-button>
               <el-button type="warning" @click="loginOut">退出登录</el-button>
             </div>
           </el-popover>
@@ -104,7 +104,14 @@ const moverLoginCard = () => {
 const loginChange = () => {
   dialogVisible.value = false;
 };
-
+const goMine = () => {
+  //前往个人中心
+  $router.push({
+    path: '/account', query: {
+      userId: userStore.userInfo.userId,
+    }
+  })
+};
 const loginOut = () => {
   //清除本地userinfo
   userStore.loginOut();

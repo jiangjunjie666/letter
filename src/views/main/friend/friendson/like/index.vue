@@ -1,26 +1,31 @@
 <template>
   <div class="fans" v-if="fansList.length > 0">
-    <h1>共有{{ fansList.length }}条数据</h1>
+    <h1>共有{{ total }}条数据</h1>
     <div class="fanslist" v-for="i in fansList" :key="i">
-      <img :src="i.image" alt="" />
-      <p class="name">{{ i.name }}</p>
-      <p class="guan">赞了你的什么动态</p>
+      <img :src="i.likeUserImage" alt="" />
+      <p class="name">{{ i.likeUserName }}</p>
+      <p class="guan">赞了你的动态</p>
+      <p class="time">{{ i.likeTime }}</p>
     </div>
   </div>
   <el-empty v-else></el-empty>
 </template>
 
 <script setup>
-import { reqFansList } from "@/api/module/user.js";
+import { reqLikeList } from "@/api/module/user.js";
 import { ref, onMounted } from "vue";
 import useUserStore from "@/store/modules/user";
+const pageNum = ref(1);
+const pageSize = ref(5);
+const total = ref(0);
 const userStore = useUserStore();
 //获取粉丝列表
 const fansList = ref([]);
 const getFansList = async () => {
-  const res = await reqFansList(userStore.userInfo.userId);
+  const res = await reqLikeList(pageNum.value, pageSize.value, userStore.userInfo.userId);
   if (res.code == 1) {
     fansList.value = res.data;
+    total.value = res.total
   }
 };
 onMounted(() => {
@@ -64,6 +69,11 @@ onMounted(() => {
 
     .btn {
       margin-left: auto;
+    }
+
+    .time {
+      margin-left: auto;
+      color: #666;
     }
   }
 }

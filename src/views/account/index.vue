@@ -5,28 +5,30 @@
       <div class="left">
         <ul>
           <li>个人中心</li>
-          <li :class="{ active: activeIndex == 1 }" @click="goRouter('/heart', 1)">
+          <li :class="{ active: activeIndex == '/account/heart' }" @click="goRouter('/heart', '/account/heart')">
             <el-icon size="20" class="icon">
               <House />
             </el-icon>
             首&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;页
           </li>
-          <li :class="{ active: activeIndex == 2 }" @click="goRouter('/avatar', 2)">
+          <li v-if="isShow" :class="{ active: activeIndex == '/account/avatar' }"
+            @click="goRouter('/avatar', '/account/avatar')">
             <el-icon size="20" class="icon">
               <House />
             </el-icon>我的头像
           </li>
-          <li :class="{ active: activeIndex == 3 }" @click="goRouter('/message', 3)">
+          <li :class="{ active: activeIndex == '/account/message' }" @click="goRouter('/message', '/account/message')">
             <el-icon size="20" class="icon">
               <House />
-            </el-icon>我的资料
+            </el-icon>个人资料
           </li>
-          <li :class="{ active: activeIndex == 4 }" @click="goRouter('/heart', 4)">
+          <li v-if="isShow" :class="{ active: activeIndex == '/account' }" @click="goRouter('/heart', 4)">
             <el-icon size="20" class="icon">
               <House />
             </el-icon>我的记录
           </li>
-          <li :class="{ active: activeIndex == 5 }" @click="goRouter('/password', 5)">
+          <li v-if="isShow" :class="{ active: activeIndex == '/account/password' }"
+            @click="goRouter('/password', '/account/password')">
             <el-icon size="20" class="icon">
               <House />
             </el-icon>修改密码
@@ -41,14 +43,21 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import useUserStore from '@/store/modules/user'
+const userStore = useUserStore();
 let $router = useRouter();
-let activeIndex = ref(1);
+const $route = useRoute();
+const userId = $route.query.userId;
+let activeIndex = ref($route.path);
 const goRouter = (path, index) => {
   activeIndex.value = index;
-  $router.push("/account" + path);
+  $router.push({ path: "/account" + path, query: { userId: userId } });
 };
+const isShow = computed(() => {
+  return userStore.userInfo.userId === $route.query.userId
+});
 </script>
 
 <style lang="scss" scoped>
@@ -79,6 +88,7 @@ const goRouter = (path, index) => {
         justify-content: center;
         display: flex;
         cursor: pointer;
+        margin: 5px 0;
 
         &.active {
           background-color: #00a1d7;
@@ -101,4 +111,5 @@ const goRouter = (path, index) => {
     width: 850px;
     height: 100%;
   }
-}</style>
+}
+</style>

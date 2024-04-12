@@ -161,6 +161,7 @@ const likeComment = async () => {
   let talksLikeDTO = {
     tid: props.communityList.tid,
     userId: userStore.userInfo.userId,
+    tobelikeUserId: props.communityList.createUserId,
   };
   let res = await reqLikeComment(talksLikeDTO);
   if (res.code != 1) {
